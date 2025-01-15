@@ -20,9 +20,15 @@ class OrdersListView(ListView):
 
     def get_queryset(self):
         status = self.request.GET.get('status')
-        if not status:
-            return super().get_queryset()
-        return Order.objects.filter(status=status)
+        tn = self.request.GET.get('tn')
+        if tn:
+            return Order.objects.filter(table_number=tn)
+        if status:
+            return Order.objects.filter(status=status)
+        return super().get_queryset()
+
+
+
 
 class CreateOrderView(FormView):
     form_class = OrderCreateForm
