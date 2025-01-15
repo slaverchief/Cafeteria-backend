@@ -1,11 +1,32 @@
-#values-name{
-    font-weight: bolder;
+#active{
+    background-color: orange;
+}
+
+.filter-panel{
+    display: flex;
+    gap: 3px;
+}
+
+.filter-panel > div{
+    width: auto;
+    border-radius: 5px; 
+    border: 2px solid rgb(0, 0, 0); 
+    overflow: hidden; 
+    width: fit-content;
 }
 
 .order {
     display: flex;
     justify-content: space-between; 
     width: 100%; 
+    margin: 5px;
+    font-weight: bold;
+    background-color: #AAAAAA;
+}
+
+#values-name{
+    font-weight: bolder;
+    background-color: unset;
 }
 
 .cell{

@@ -20,8 +20,11 @@ class Order(models.Model):
     items = models.ManyToManyField(Dish, related_name='orders')
     status = models.IntegerField(choices=STATUS_CHOICES)
 
+    def get_status(self):
+        return STATUS_CHOICES[self.status-1][1]
+
     def total_price(self):
-        return sum([item.price for item in self.items.all()])
+        return str(sum([item.price for item in self.items.all()]))+'₽'
 
     def get_items_list(self):
         string = ""
