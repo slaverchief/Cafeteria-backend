@@ -1,0 +1,22 @@
+a{
+    text-decoration: none;
+    color: black;
+}
+nav {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%; 
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+  
+.nav-button{
+    font-size: 21px;
+    flex: 1;
+    margin: 0 10px;
+}
+
+.nav-button:hover{
+    transform: scale(1.1);
+    color: gray;
+}

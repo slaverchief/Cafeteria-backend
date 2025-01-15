@@ -1,0 +1,15 @@
+#values-name{
+    font-weight: bolder;
+}
+
+.order {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%; 
+}
+
+.cell{
+    flex: 1;
+    margin: 0 10px;
+    padding-right: 1px;
+}

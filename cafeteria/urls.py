@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from cafeteria import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('orders/', include("orders.urls"))
 ]
+

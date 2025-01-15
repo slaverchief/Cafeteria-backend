@@ -1,0 +1,27 @@
+{% include "base.html" %}
+{% load static %}
+
+{% block head %}
+<link type="text/css" href="{% static 'orders/css/orders.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<div id="orders-list">
+    <div class="order" id="values-name">
+        <div class="cell">ID</div>
+        <div class="cell">Номер стола</div>
+        <div class="cell">Блюда</div>
+        <div class="cell">Стоимость</div>
+        <div class="cell">Статус</div>
+    </div>
+    {% for order in orders %}
+    <div class="order">
+        <div class="cell">{{order.pk}}</div>
+        <div class="cell">{{order.table_number}}</div>
+        <div class="cell">{{order.get_items_list}}</div>
+        <div class="cell">{{order.total_price}}</div>
+        <div class="cell">{{order.status}}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
