@@ -1,0 +1,4 @@
+select > option:hover{
+    cursor: pointer;
+}
+

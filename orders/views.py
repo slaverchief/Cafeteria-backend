@@ -1,5 +1,8 @@
-from django.shortcuts import render
-from django.views.generic import ListView
+
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, FormView
+
+from .forms import OrderCreateForm
 from .models import *
 
 class OrdersListView(ListView):
@@ -20,3 +23,14 @@ class OrdersListView(ListView):
         if not status:
             return super().get_queryset()
         return Order.objects.filter(status=status)
+
+class CreateOrderView(FormView):
+    form_class = OrderCreateForm
+    fields = "__all__"
+    template_name = "orders/create_order.html"
+    extra_context = {"title": "Создание заказа"}
+    success_url = reverse_lazy('create')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

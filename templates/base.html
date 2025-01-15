@@ -12,10 +12,10 @@
 <body>
 <header>
     <nav>
-        <a href="#"><div class="nav-button">Добавление заказа</div></a>
+        <a href="{% url 'create' %}"><div class="nav-button">Добавление заказа</div></a>
         <a href="#"><div class="nav-button">Удаление заказа</div></a>
         <a href="#"><div class="nav-button">Поиск заказа</div></a>
-        <a href="#"><div class="nav-button">Отображение всех заказов</div></a>
+        <a href="{% url 'list' %}"><div class="nav-button">Отображение всех заказов</div></a>
         <a href="#"><div class="nav-button">Изменение статуса заказа</div></a>
         <a href="#"><div class="nav-button">Расчёт выручки</div></a>
     </nav>
