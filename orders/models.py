@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import choices
 
 from django.db import models
@@ -21,9 +22,8 @@ STATUS_CHOICES =(
 class Order(models.Model):
     table_number = models.IntegerField(unique=True)
     items = models.ManyToManyField(Dish, related_name='orders')
-    status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=1)
+    status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=3)
     paid_date = models.DateField(null=True, blank=True)
-
 
 
     def get_status(self):

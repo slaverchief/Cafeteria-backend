@@ -8,7 +8,7 @@ from django.views.generic import ListView, FormView, UpdateView
 
 from .forms import *
 from .models import *
-from .services import calculate_cash_sum
+from .services import calculate_cash_sum, set_paid_date
 
 
 class OrdersListView(ListView):
@@ -52,6 +52,13 @@ class UpdateOrderView(UpdateView):
     template_name = 'orders/edit_order.html'
     extra_context = {"title": "Редактирование заказа"}
     success_url = reverse_lazy("list")
+
+    def post(self, request, *args, **kwargs):
+        status_before = self.get_object().status
+        res = super().post(request, *args, **kwargs)
+        status_after = self.object.status
+        set_paid_date(status_before, status_after, self.object)
+        return res
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()

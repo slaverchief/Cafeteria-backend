@@ -1,6 +1,18 @@
+import datetime
+
 from .models import Order
 
 def calculate_cash_sum(from_date, to_date):
     return sum([int(n.total_price(as_int=True)) for n in Order.objects.filter(status__lte=2,
                                                               paid_date__gte=from_date,
                                                               paid_date__lte=to_date)])
+
+def set_paid_date(status_before, status_after, order):
+    if status_before == status_after:
+        return
+    elif status_before == 3:
+        order.paid_date = datetime.datetime.now()
+        order.save()
+    elif status_before in (1, 2) and status_after == 3:
+        order.paid_date = None
+        order.save()
