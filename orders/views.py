@@ -1,10 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, UpdateView
 
-
-from .forms import OrderCreateForm
+from .forms import *
 from .models import *
 
 
@@ -41,6 +40,23 @@ class CreateOrderView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class UpdateOrderView(UpdateView):
+    model = Order
+    fields = ['status', 'items']
+    template_name = 'orders/edit_order.html'
+    extra_context = {"title": "Редактирование заказа"}
+    success_url = reverse_lazy("list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['pk'] = self.object.pk
+        return context
+
+    def get_form_class(self):
+        return OrderEditForm
+
 
 def delete_order(request, pk):
     Order.objects.get(pk=pk).delete()

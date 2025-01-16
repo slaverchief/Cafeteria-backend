@@ -21,7 +21,7 @@ STATUS_CHOICES =(
 class Order(models.Model):
     table_number = models.IntegerField(unique=True)
     items = models.ManyToManyField(Dish, related_name='orders')
-    status = models.IntegerField(choices=STATUS_CHOICES)
+    status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=1)
 
 
 

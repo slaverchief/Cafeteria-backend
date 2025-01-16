@@ -6,34 +6,34 @@
 {% endblock %}
 
 {% block content %}
-<div id="lookup-tools">
-    <div id="search-tool">
-        <input id="search-input" type="number" placeholder="поиск по номеру стола">
-        <button id="search-button" type="button">Поиск</button>
-    </div>
-    <div id="filter-tool">
-        <div>Фильтр</div>
-        <div class="filter-panel">
-            <div id="0"><a href="?">Все</a></div>
-            <div id="1"><a href="?status=1">Готово</a></div>
-            <div id="2"><a href="?status=2">Оплачено</a></div>
-            <div id="3"><a href="?status=3">В ожидании</a></div>
-            {% if status_filter %}
-            <script>
-                block = document.getElementById('{{status_filter}}')
-                block.id = 'active'
-            </script>
-            {% else %}
-            <script>
-                block = document.getElementById('0')
-                block.id = 'active'
-            </script>
-            {% endif %}
-        
-        </div>
-    </div>
 
+<div class="lookup-tool" id="search-tool">
+    <input id="search-input" type="number" placeholder="номер стола">
+    <button id="search-button" type="button">Поиск</button>
 </div>
+<div class="lookup-tool" id="filter-tool">
+    <div>Фильтр</div>
+    <div class="filter-panel">
+        <div id="0"><a href="?">Все</a></div>
+        <div id="1"><a href="?status=1">Готово</a></div>
+        <div id="2"><a href="?status=2">Оплачено</a></div>
+        <div id="3"><a href="?status=3">В ожидании</a></div>
+        {% if status_filter %}
+        <script>
+            block = document.getElementById('{{status_filter}}')
+            block.id = 'active'
+        </script>
+        {% else %}
+        <script>
+            block = document.getElementById('0')
+            block.id = 'active'
+        </script>
+        {% endif %}
+    
+    </div>
+</div>
+
+
 
 
 
@@ -55,8 +55,8 @@
             <div class="cell">{{order.get_status}}</div>
         </div>
         <div class="edit-tools">
-            <a><button class="cell-button edit-button">Редактировать</button></a>
-            <a><button onclick="delete_order({{order.pk}})" class="cell-button del-button">Удалить</button></a>
+            <a href="{% url 'edit' order.pk %} "><button class="cell-button edit-button">Редактировать</button></a>
+            <button onclick="delete_order({{order.pk}})" class="cell-button del-button">Удалить</button>
         </div>
     </div>
     

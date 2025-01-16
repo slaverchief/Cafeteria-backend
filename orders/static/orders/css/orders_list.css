@@ -42,9 +42,11 @@
     
 }
 
-#lookup-tools{
+.lookup-tool{
+    margin-bottom: 10px;
     font-weight: bold;
 }
+
 
 .cell-button{
     flex: 0;
