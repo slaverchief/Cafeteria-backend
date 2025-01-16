@@ -10,7 +10,7 @@ from .forms import *
 from .models import *
 from .services import calculate_cash_sum, set_paid_date, get_filtered_orders
 
-
+# Класс-представление для отображения всех заказов
 class OrdersListView(ListView):
     model = Order
     context_object_name = 'orders'
@@ -25,7 +25,7 @@ class OrdersListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset = get_filtered_orders(self.request.GET)
+        queryset = get_filtered_orders(self.request.GET) # проводит фильтрацию по переданным в GET параметрах данных
         if queryset is not None:
             return queryset
         return super().get_queryset()
@@ -38,13 +38,6 @@ class CreateOrderView(FormView):
     extra_context = {"title": "Создание заказа"}
     success_url = reverse_lazy('create')
 
-    def post(self, request, *args, **kwargs):
-        res = super().post(request, *args, **kwargs)
-        return res
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
 
 class UpdateOrderView(UpdateView):
@@ -69,13 +62,16 @@ class UpdateOrderView(UpdateView):
     def get_form_class(self):
         return OrderEditForm
 
+# Возвращает страницу для получения расчёта прибыли
 def calc_cash(request):
     return render(request, template_name="orders/calc.html", context={'title': "Расчёт выручки"})
 
+# Удаляет заказ
 def delete_order(request, pk):
     Order.objects.get(pk=pk).delete()
     return HttpResponse()
 
+# Реализует API для получения выручки через Ajax запросд
 @csrf_exempt
 def get_cash(request):
     data = json.loads(request.body)
