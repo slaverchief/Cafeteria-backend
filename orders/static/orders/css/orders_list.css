@@ -18,7 +18,7 @@
 .order {
     display: flex;
     justify-content: space-between; 
-    width: 100%; 
+    width: 90%; 
     margin: 5px;
     font-weight: bold;
     background-color: #AAAAAA;
@@ -27,9 +27,7 @@
     
 }
 
-#orders-list{
-    width: 90%;
-}
+
 
 #values-name{
     font-weight: bolder;
@@ -46,4 +44,33 @@
 
 #lookup-tools{
     font-weight: bold;
+}
+
+.cell-button{
+    flex: 0;
+    font-weight: bold;
+    border-radius: 15px; 
+    border: 3px solid rgb(0, 0, 0); 
+}
+
+.edit-tools{
+    margin-bottom: 10px;
+}
+
+.cell-button:hover{
+    transform: scale(1.1);
+    background-color: gray;
+    cursor: pointer;
+}
+
+.row{
+    display: flex;
+}
+
+.edit-button{
+    background-color: lawngreen;
+}
+
+.del-button{
+    background-color: red;
 }

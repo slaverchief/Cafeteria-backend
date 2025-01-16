@@ -46,13 +46,20 @@
         <div class="cell">Статус</div>
     </div>
     {% for order in orders %}
-    <div class="order">
-        <div class="cell">{{order.pk}}</div>
-        <div class="cell">{{order.table_number}}</div>
-        <div class="cell">{{order.get_items_list}}</div>
-        <div class="cell">{{order.total_price}}</div>
-        <div class="cell">{{order.get_status}}</div>
+    <div class="row" id="{{order.pk}}">
+        <div class="order">
+            <div class="cell">{{order.pk}}</div>
+            <div class="cell">{{order.table_number}}</div>
+            <div class="cell">{{order.get_items_list}}</div>
+            <div class="cell">{{order.total_price}}</div>
+            <div class="cell">{{order.get_status}}</div>
+        </div>
+        <div class="edit-tools">
+            <a><button class="cell-button edit-button">Редактировать</button></a>
+            <a><button onclick="delete_order({{order.pk}})" class="cell-button del-button">Удалить</button></a>
+        </div>
     </div>
+    
     {% endfor %}
 </div>
 <script src="{% static 'orders/js/orders_list.js' %}" type="text/javascript"></script>

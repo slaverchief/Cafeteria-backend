@@ -1,9 +1,12 @@
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, FormView
 
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, FormView
 
 from .forms import OrderCreateForm
 from .models import *
+
 
 class OrdersListView(ListView):
     model = Order
@@ -28,8 +31,6 @@ class OrdersListView(ListView):
         return super().get_queryset()
 
 
-
-
 class CreateOrderView(FormView):
     form_class = OrderCreateForm
     fields = "__all__"
@@ -40,3 +41,8 @@ class CreateOrderView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+def delete_order(request, pk):
+    Order.objects.get(pk=pk).delete()
+    return HttpResponse()
+
