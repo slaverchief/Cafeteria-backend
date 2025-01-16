@@ -22,14 +22,18 @@ class Order(models.Model):
     table_number = models.IntegerField(unique=True)
     items = models.ManyToManyField(Dish, related_name='orders')
     status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=1)
+    paid_date = models.DateField(null=True, blank=True)
 
 
 
     def get_status(self):
         return STATUS_CHOICES[self.status-1][1]
 
-    def total_price(self):
-        return str(sum([item.price for item in self.items.all()]))+'₽'
+    def total_price(self, as_int=False):
+        s = sum([item.price for item in self.items.all()])
+        if as_int:
+            return s
+        return str(s)+'₽'
 
     def get_items_list(self):
         string = ""

@@ -1,10 +1,14 @@
+import json
+
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, FormView, UpdateView
 
 from .forms import *
 from .models import *
+from .services import calculate_cash_sum
 
 
 class OrdersListView(ListView):
@@ -57,8 +61,16 @@ class UpdateOrderView(UpdateView):
     def get_form_class(self):
         return OrderEditForm
 
+def calc_cash(request):
+    return render(request, template_name="orders/calc.html", context={'title': "Расчёт выручки"})
 
 def delete_order(request, pk):
     Order.objects.get(pk=pk).delete()
     return HttpResponse()
+
+@csrf_exempt
+def get_cash(request):
+    data = json.loads(request.body)
+    from_date, to_date = data.get('from'), data.get('to')
+    return HttpResponse(calculate_cash_sum(from_date, to_date))
 

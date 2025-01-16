@@ -1,0 +1,20 @@
+{% load static %}
+{% include 'base.html' %}
+
+{% block head %}
+<link type="text/css" href="{% static 'orders/css/cash_calc.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<div class="date-span-editors">
+    <div><label>Дата, от которой считается выручка: </label><input id="from"  type="date"></div>
+    <div><label>Дата, до которой считается выручка</label><input id="to" type="date"></div>
+    
+</div>
+<div id="sum-block">
+    Сумма:
+    <div id="sum"></div>
+</div>
+
+<script src="{% static 'orders/js/cash_calc.js' %}" type="text/javascript"></script>
+{% endblock %}
