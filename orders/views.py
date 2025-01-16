@@ -8,7 +8,7 @@ from django.views.generic import ListView, FormView, UpdateView
 
 from .forms import *
 from .models import *
-from .services import calculate_cash_sum, set_paid_date
+from .services import calculate_cash_sum, set_paid_date, get_filtered_orders
 
 
 class OrdersListView(ListView):
@@ -25,12 +25,9 @@ class OrdersListView(ListView):
         return context
 
     def get_queryset(self):
-        status = self.request.GET.get('status')
-        tn = self.request.GET.get('tn')
-        if tn:
-            return Order.objects.filter(table_number=tn)
-        if status:
-            return Order.objects.filter(status=status)
+        queryset = get_filtered_orders(self.request.GET)
+        if queryset is not None:
+            return queryset
         return super().get_queryset()
 
 
@@ -40,6 +37,10 @@ class CreateOrderView(FormView):
     template_name = "orders/create_order.html"
     extra_context = {"title": "Создание заказа"}
     success_url = reverse_lazy('create')
+
+    def post(self, request, *args, **kwargs):
+        res = super().post(request, *args, **kwargs)
+        return res
 
     def form_valid(self, form):
         form.save()

@@ -1,5 +1,7 @@
 import datetime
 
+from django.db.models import QuerySet
+
 from .models import Order
 
 def calculate_cash_sum(from_date, to_date):
@@ -16,3 +18,17 @@ def set_paid_date(status_before, status_after, order):
     elif status_before in (1, 2) and status_after == 3:
         order.paid_date = None
         order.save()
+
+def get_filtered_orders(data):
+    status = data.get('status')
+    tn = data.get('tn')
+    if tn:
+        if not tn.isdigit():
+            return
+        return Order.objects.filter(table_number=tn)
+    if status:
+        if not status.isdigit():
+            return
+        return Order.objects.filter(status=status)
+    if tn or status:
+        return QuerySet([])
