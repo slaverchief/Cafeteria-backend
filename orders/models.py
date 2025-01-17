@@ -6,7 +6,7 @@ from django.db import models
 # Модель блюда
 class Dish(models.Model):
     name = models.CharField(max_length=255, unique=True) # название блюда
-    price = models.IntegerField() # цена блюда
+    price = models.PositiveIntegerField() # цена блюда
 
     def __str__(self):
         return f"{self.name} - {self.price}₽"
