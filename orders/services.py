@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from django.db.models import QuerySet
 from django.http import QueryDict
@@ -6,14 +6,13 @@ from django.http import QueryDict
 from .models import Order
 
 # Подсчитывает сумму выручки от и до определенных дат
-def calculate_cash_sum(from_date: datetime, to_date: datetime):
+def calculate_cash_sum(from_date: datetime.datetime, to_date: datetime.datetime):
     return sum([int(n.total_price(as_int=True)) for n in Order.objects.filter(status__lte=2,
                                                               paid_date__gte=from_date,
                                                               paid_date__lte=to_date)])
 
 # Задает дату оплаты или стирает дату оплаты в зависимости от того какой статус был до этого
 def set_paid_date(status_before: int, status_after: int, order: Order):
-    print(type(order))
     if status_before == status_after:
         return
     elif status_before == 3:

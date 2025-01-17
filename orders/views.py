@@ -38,7 +38,9 @@ class CreateOrderView(FormView):
     extra_context = {"title": "Создание заказа"}
     success_url = reverse_lazy('create')
 
-
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 class UpdateOrderView(UpdateView):
     model = Order

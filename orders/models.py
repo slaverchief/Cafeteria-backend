@@ -27,7 +27,10 @@ class Order(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=3) # статус заказа
     paid_date = models.DateField(null=True, blank=True) # дата оплаты заказа
 
-    # метод возвращает строковое представление статуса через его численный идентификатор в списке STATUS_CHOICESs
+    def get_paid_date(self):
+        return self.paid_date.strftime("%d.%m.%Y")
+
+    # метод возвращает строковое представление статуса через его численный идентификатор в списке STATUS_CHOICES
     def get_status(self):
         return STATUS_CHOICES[self.status-1][1]
 

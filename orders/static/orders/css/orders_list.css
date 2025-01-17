@@ -27,7 +27,9 @@
     
 }
 
-
+#orders-list{
+    align-self: center;
+}
 
 #values-name{
     font-weight: bolder;
@@ -38,8 +40,6 @@
 .cell{
     flex: 1;
     margin: 0 10px;
-    padding-right: 1px;
-    
 }
 
 .lookup-tool{
