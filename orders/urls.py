@@ -1,4 +1,3 @@
-
 from orders.views.pages import *
 from django.urls import path
 
