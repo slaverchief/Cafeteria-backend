@@ -1,9 +1,8 @@
-from datetime import datetime
-
-from tests.base import BaseTestCase
+from apps.tests.base import BaseTestCase
 from django.urls import reverse
-from django.urls.exceptions import NoReverseMatch
-from orders import models
+from apps.orders import models
+
+
 class TestOrderList(BaseTestCase):
 
     def test_200_code(self):

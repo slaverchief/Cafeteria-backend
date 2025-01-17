@@ -1,5 +1,5 @@
 from django.test import TestCase
-from orders import models
+from apps.orders import models
 from datetime import datetime
 
 class BaseTestCase(TestCase):

@@ -1,4 +1,4 @@
-from orders.views.pages import *
+from apps.orders.views.pages import *
 from django.urls import path
 
 urlpatterns = [
