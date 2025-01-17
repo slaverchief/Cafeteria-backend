@@ -10,7 +10,7 @@ from .forms import *
 from .models import *
 from .services import calculate_cash_sum, set_paid_date, get_filtered_orders
 
-# Класс-представление для отображения всех заказов
+# Класс-представление для страницы отображения всех заказов
 class OrdersListView(ListView):
     model = Order
     context_object_name = 'orders'
@@ -30,7 +30,7 @@ class OrdersListView(ListView):
             return queryset
         return super().get_queryset()
 
-
+# Класс-представление для страницы создания заказа
 class CreateOrderView(FormView):
     form_class = OrderCreateForm
     fields = "__all__"
@@ -42,6 +42,7 @@ class CreateOrderView(FormView):
         form.save()
         return super().form_valid(form)
 
+# Класс-представление для страницы редактирования заказа
 class UpdateOrderView(UpdateView):
     model = Order
     fields = ['status', 'items']
@@ -53,7 +54,7 @@ class UpdateOrderView(UpdateView):
         status_before = self.get_object().status
         res = super().post(request, *args, **kwargs)
         status_after = self.object.status
-        set_paid_date(status_before, status_after, self.object)
+        set_paid_date(status_before, status_after, self.object) # вычисление статусов до и после внесения изменений, введенных пользователем и передача функции set_paid_date
         return res
 
     def get_context_data(self, **kwargs):
@@ -61,6 +62,7 @@ class UpdateOrderView(UpdateView):
         context['pk'] = self.object.pk
         return context
 
+    # Изменение стандартной формы для редактирования модели
     def get_form_class(self):
         return OrderEditForm
 
@@ -77,6 +79,6 @@ def delete_order(request, pk):
 @csrf_exempt
 def get_cash(request):
     data = json.loads(request.body)
-    from_date, to_date = data.get('from'), data.get('to')
+    from_date, to_date = data.get('from'), data.get('to') # извлечение даты начала и конца отсчёта и передаем функции calculate_cash_sum
     return HttpResponse(calculate_cash_sum(from_date, to_date))
 

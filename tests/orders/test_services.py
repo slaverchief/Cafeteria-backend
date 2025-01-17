@@ -29,7 +29,7 @@ class TestSetPaidDate(BaseTestCase):
     def test_paid_date_set_now(self):
         order = models.Order.objects.filter(status=3).first()
         status_before = order.status
-        order.status = 2
+        order.status = 1
         status_after = order.status
         services.set_paid_date(status_before, status_after, order)
         self.assertEqual(order.paid_date.strftime("%y%m%d"), datetime.now().strftime("%y%m%d"))

@@ -15,8 +15,8 @@ class Dish(models.Model):
         verbose_name_plural = "Dishes"
 
 STATUS_CHOICES =(
-    (1, "Готово"),
-    (2, "Оплачено"),
+    (1, "Оплачено"),
+    (2, "Готово"),
     (3, "В ожидании"),
 )
 
