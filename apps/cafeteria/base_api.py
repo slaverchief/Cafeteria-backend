@@ -12,12 +12,6 @@ class BaseCafeteriaApiView(APIView):
         serializers = self.Serializer(self.get_objects(request), many=True)
         return Response(serializers.data)
 
-    def post(self, request):
-        serializer = self.Serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        obj = serializer.save()
-        return Response({"id": obj.id})
-
     def delete(self, request):
         self.Model.objects.get(**request.data).delete()
         return Response()
