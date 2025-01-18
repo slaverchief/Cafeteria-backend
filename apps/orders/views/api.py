@@ -41,3 +41,10 @@ class OrderApiView(BaseCafeteriaApiView):
         update_orders(select_values, update_values)
         return Response()
 
+    # Переписанный, подобно методу POST из ReadOrderApiView представления, метод DELETE
+    def delete(self, request):
+        if 'items' not in request.data or len(request.data['items']) == 0:
+            return super().delete(request)
+        else:
+            [obj.delete() for obj in get_orders_using_items(request.data)]
+            return Response()

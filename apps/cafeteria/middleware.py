@@ -9,7 +9,7 @@ class CustomExceptionsHandler:
     EXCEPTION_MESSAGES = {
         NoSelectedObjects: (404, "Не найдены выбранные объекты"),
         NonEditFieldsWereTouched: (400, "Вы попытались изменить неизменяемое поле"),
-        NestedObjectsDontExist: (400, "Вы ввели несуществующие вложенные объекты"),
+        NestedObjectsDontExist: (404, "Вы ввели несуществующие вложенные объекты"),
         ValidationError: (400, 'Данные введены в недопустимом формате')
     } # определяет текст сообщений, которые отправляются пользователю в случае вызова какого-либо исключения
 
