@@ -25,11 +25,6 @@ class Order(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=3) # статус заказа
     paid_date = models.DateField(null=True, blank=True) # дата оплаты заказа
 
-    def validate_constraints(self, exclude=None):
-        res = super().validate_constraints(exclude)
-        print(res)
-        return res
-
     def get_paid_date(self):
         return self.paid_date.strftime("%d.%m.%Y")
 

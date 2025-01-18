@@ -3,12 +3,13 @@ from django.http import HttpResponse
 from apps.cafeteria.exceptions import *
 
 
-
+# Middleware для обработки пользовательских исключений
 class CustomExceptionsHandler:
     EXCEPTION_MESSAGES = {
         NoSelectedObjects: (404, "Не найдены выбранные объекты"),
-        NonEditFieldsWereTouched: (400, "Вы попытались изменить неизменяемое поле")
-    }
+        NonEditFieldsWereTouched: (400, "Вы попытались изменить неизменяемое поле"),
+        NestedObjectsDontExist: (400, "Вы ввели несуществующие вложенные объекты")
+    } # определяет текст сообщений, которые отправляются пользователю в случае вызова какого-либо исключения
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -21,4 +22,4 @@ class CustomExceptionsHandler:
         if type(exception) in CustomExceptionsHandler.EXCEPTION_MESSAGES.keys():
             return HttpResponse(status=CustomExceptionsHandler.EXCEPTION_MESSAGES[type(exception)][0], content={CustomExceptionsHandler.EXCEPTION_MESSAGES[type(exception)][1]})
         elif type(exception) is IntegrityError:
-            return HttpResponse(status=400, content=str(exception).split('\n')[0])
+            return HttpResponse(status=400, content=str(exception).split('\n')[0]) # если исключение касается нарушений ограничений базы данных, возвращается информативная часть исключения, говорящая о том, какое ограничение нарушено

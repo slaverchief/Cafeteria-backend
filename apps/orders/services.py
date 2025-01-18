@@ -1,8 +1,11 @@
 import datetime
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import QueryDict
+
 from serializers.orders import OrderSerializer
-from .models import Order
-from ..cafeteria.exceptions import NoSelectedObjects
+from .models import Order, Dish
+from ..cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist
 
 
 # Подсчитывает сумму выручки от и до определенных дат
@@ -37,12 +40,42 @@ def get_filtered_orders(data: QueryDict):
             return
         return Order.objects.filter(status=status)
 
-# def update_orders(select, update):
-#     queryset = Order.objects.filter(**select)
-#     if not queryset:
-#         raise NoSelectedObjects
-#
-#     for obj in queryset:
-#         for key in update:
-#             setattr(obj, key, update[key])
-#         obj.save()
+# Обновляет значения заказов
+def update_orders(select: dict, update: dict):
+    queryset = Order.objects.filter(**select) # берём все объекты модели Order, которые прописаны в словаре select
+    if not queryset:
+        raise NoSelectedObjects()
+    for obj in queryset:
+        for field in update:
+            if field == 'items':
+                obj.items.set(update['items']) # для поля items полностью меняем все связи
+            else:
+                setattr(obj, field, update[field]) # для всех остальных полей просто присваиваем значения из словаря update
+
+# Возвращает объекты блюд с ID из данного списка
+def get_dishes_by_id(items: list):
+    try:
+        return [Dish.objects.get(pk=pk) for pk in items]
+    except ObjectDoesNotExist:
+        raise NestedObjectsDontExist()
+
+def get_orders(data: dict):
+    get_dishes_by_id(data['items'])
+    data['items'].append(-1)
+    raw_query = "SELECT DISTINCT oo.id FROM orders_order as oo JOIN orders_order_items as ooi ON oo.id = ooi.order_id " \
+                f"WHERE ooi.dish_id IN {tuple(data['items'])}"
+    del data['items']
+    for field in data:
+        raw_query += f" AND oo.{field}={data[field]}"
+    print(raw_query)
+    objs = list(Order.objects.raw(raw_query+' GROUP BY oo.id;'))
+    return objs
+
+# Создает заказ
+def create_order(create_data):
+    s = OrderSerializer(data=create_data)
+    s.is_valid(raise_exception=True)
+    s = s.save()
+    if 'items' in create_data:
+        s.items.set(get_dishes_by_id(create_data['items']))
+        s.save()
