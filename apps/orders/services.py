@@ -59,6 +59,7 @@ def get_dishes_by_id(items: list):
     except ObjectDoesNotExist:
         raise NestedObjectsDontExist()
 
+# Возвращает заказы, в которых есть параметр items
 def get_orders(data: dict):
     get_dishes_by_id(data['items'])
     data['items'].append(-1)
@@ -67,7 +68,6 @@ def get_orders(data: dict):
     del data['items']
     for field in data:
         raw_query += f" AND oo.{field}={data[field]}"
-    print(raw_query)
     objs = list(Order.objects.raw(raw_query+' GROUP BY oo.id;'))
     return objs
 
