@@ -15,7 +15,7 @@ class OrderApiView(BaseCafeteriaApiView):
         return Response()
 
     def get(self, request):
-        if 'items' not in request.data:
+        if 'items' not in request.data or len(request.data['items']) == 0:
             return super().get(request)
         return Response(self._Serializer(get_orders(request.data), many=True).data)
 
