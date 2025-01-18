@@ -7,3 +7,6 @@ class PageException(Exception):
 
 class NoSelectedObjects(APIException):
     pass
+
+class NonEditFieldsWereTouched(APIException):
+    pass

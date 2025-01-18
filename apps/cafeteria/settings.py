@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'apps.cafeteria.middleware.CustomExceptionsHandler'
 ]
 
+
 ROOT_URLCONF = 'cafeteria.urls'
 
 TEMPLATES = [

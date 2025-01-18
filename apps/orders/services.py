@@ -1,7 +1,9 @@
 import datetime
 from django.http import QueryDict
-
+from serializers.orders import OrderSerializer
 from .models import Order
+from ..cafeteria.exceptions import NoSelectedObjects
+
 
 # Подсчитывает сумму выручки от и до определенных дат
 def calculate_cash_sum(from_date: datetime.datetime, to_date: datetime.datetime):
@@ -34,3 +36,13 @@ def get_filtered_orders(data: QueryDict):
         if not status.isdigit():
             return
         return Order.objects.filter(status=status)
+
+# def update_orders(select, update):
+#     queryset = Order.objects.filter(**select)
+#     if not queryset:
+#         raise NoSelectedObjects
+#
+#     for obj in queryset:
+#         for key in update:
+#             setattr(obj, key, update[key])
+#         obj.save()
