@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.cafeteria.middleware.CustomExceptionsHandler'
 ]
 
 ROOT_URLCONF = 'cafeteria.urls'
