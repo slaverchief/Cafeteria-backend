@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponse
 from apps.cafeteria.exceptions import *
@@ -8,7 +9,8 @@ class CustomExceptionsHandler:
     EXCEPTION_MESSAGES = {
         NoSelectedObjects: (404, "Не найдены выбранные объекты"),
         NonEditFieldsWereTouched: (400, "Вы попытались изменить неизменяемое поле"),
-        NestedObjectsDontExist: (400, "Вы ввели несуществующие вложенные объекты")
+        NestedObjectsDontExist: (400, "Вы ввели несуществующие вложенные объекты"),
+        ValidationError: (400, 'Данные введены в недопустимом формате')
     } # определяет текст сообщений, которые отправляются пользователю в случае вызова какого-либо исключения
 
     def __init__(self, get_response):

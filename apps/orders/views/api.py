@@ -1,10 +1,23 @@
 
 from rest_framework.response import Response
 from apps.orders.services import *
-from apps.cafeteria.base_api import BaseCafeteriaApiView
+from apps.cafeteria.base_api import *
 from serializers.orders import OrderSerializer
 from apps.orders.models import Order
 
+
+class ReadOrderApiView(BaseReadCafeteriaApiView):
+    _Model = Order
+    _Serializer = OrderSerializer
+
+    def post(self, request):
+        if 'items' not in request.data or len(request.data['items']) == 0:
+            return super().post(request)
+        else:
+            serialized = OrderSerializer(get_orders_using_items(request.data), many=True)
+            if not serialized.data:
+                return Response(status=404)
+            return Response(serialized.data)
 
 class OrderApiView(BaseCafeteriaApiView):
     _Serializer = OrderSerializer
@@ -13,11 +26,6 @@ class OrderApiView(BaseCafeteriaApiView):
     def post(self, request):
         create_order(request.data)
         return Response()
-
-    def get(self, request):
-        if 'items' not in request.data or len(request.data['items']) == 0:
-            return super().get(request)
-        return Response(self._Serializer(get_orders(request.data), many=True).data)
 
     # Обработка PUT методов
     def put(self, request):

@@ -42,7 +42,10 @@ def get_filtered_orders(data: QueryDict):
 
 # Обновляет значения заказов
 def update_orders(select: dict, update: dict):
-    queryset = Order.objects.filter(**select) # берём все объекты модели Order, которые прописаны в словаре select
+    if 'items' in select and len(select['items']) != 0: # такая же логика как и в POST запроса для retrieve операций при наличии значения items в фильтре
+        queryset = get_orders_using_items(select)
+    else:
+        queryset = Order.objects.filter(**select) # берём все объекты модели Order, которые прописаны в словаре select
     if not queryset:
         raise NoSelectedObjects()
     for obj in queryset:
@@ -52,6 +55,8 @@ def update_orders(select: dict, update: dict):
             else:
                 setattr(obj, field, update[field]) # для всех остальных полей просто присваиваем значения из словаря update
 
+        obj.save()
+
 # Возвращает объекты блюд с ID из данного списка
 def get_dishes_by_id(items: list):
     try:
@@ -60,7 +65,7 @@ def get_dishes_by_id(items: list):
         raise NestedObjectsDontExist()
 
 # Возвращает заказы, в которых есть параметр items
-def get_orders(data: dict):
+def get_orders_using_items(data: dict):
     get_dishes_by_id(data['items'])
     data['items'].append(-1)
     raw_query = "SELECT DISTINCT oo.id FROM orders_order as oo JOIN orders_order_items as ooi ON oo.id = ooi.order_id " \
