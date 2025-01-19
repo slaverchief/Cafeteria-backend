@@ -1,8 +1,6 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from cafeteria.exceptions import NoDatesGiven
 from orders.services import *
-from serializers.orders import OrderSerializer
+from view_tools.serializers.orders import OrderSerializer
 from orders.models import Order
 from cafeteria.base_api import *
 

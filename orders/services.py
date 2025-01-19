@@ -3,7 +3,7 @@ import datetime
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import QueryDict
 from django.db import transaction
-from serializers.orders import OrderSerializer
+from view_tools.serializers.orders import OrderSerializer
 from .models import Order, Dish
 from cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist, LogicError
 
