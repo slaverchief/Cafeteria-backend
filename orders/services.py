@@ -7,7 +7,6 @@ from view_tools.serializers.orders import OrderSerializer
 from .models import Order, Dish
 from cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist, LogicError
 
-
 # Подсчитывает сумму выручки от и до определенных дат
 def calculate_cash_sum(from_date: datetime.datetime, to_date: datetime.datetime):
     try:
@@ -59,6 +58,8 @@ def update_orders(select: dict, update: dict):
                 setattr(obj, field, update[field]) # для всех остальных полей просто присваиваем значения из словаря update
         if obj.status == 1 and not obj.paid_date:
             raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты")
+        if not obj.items.all():
+            raise LogicError("в заказе должно быть выбрано хотя бы 1 блюдо")
         obj.save()
 
 # Возвращает объекты блюд с ID из данного списка
@@ -83,11 +84,12 @@ def get_orders_using_items(data: dict):
 
 # Создает заказ
 def create_order(create_data):
+    if 'items' not in create_data or not create_data['items']:
+        raise LogicError("в заказе должно быть выбрано хотя бы 1 блюдо")
     s = OrderSerializer(data=create_data)
     s.is_valid(raise_exception=True)
     if s.validated_data.get('status') == 1 and not s.validated_data.get('paid_date'):
         raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты")
     s = s.save()
-    if 'items' in create_data:
-        s.items.set(get_dishes_by_id(create_data['items']))
-        s.save()
+    s.items.set(get_dishes_by_id(create_data['items']))
+    s.save()
