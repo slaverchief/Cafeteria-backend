@@ -6,6 +6,10 @@ class APIException(Exception):
 class PageException(Exception):
     pass
 
+# Исключение, возникающее при нарушении логики работа приложения
+class LogicError(Exception):
+    pass
+
 
 class NoSelectedObjects(APIException):
     pass
@@ -21,3 +25,4 @@ class NoDatesGiven(APIException):
 
 class TogetherConditionViolation(APIException):
     pass
+

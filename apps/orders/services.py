@@ -5,7 +5,7 @@ from django.http import QueryDict
 
 from serializers.orders import OrderSerializer
 from .models import Order, Dish
-from ..cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist
+from ..cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist, LogicError
 
 
 # Подсчитывает сумму выручки от и до определенных дат
@@ -57,7 +57,8 @@ def update_orders(select: dict, update: dict):
                 obj.items.set(update['items']) # для поля items полностью меняем все связи
             else:
                 setattr(obj, field, update[field]) # для всех остальных полей просто присваиваем значения из словаря update
-
+        if obj.status == 1 and not obj.paid_date:
+            raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты")
         obj.save()
 
 # Возвращает объекты блюд с ID из данного списка
@@ -83,6 +84,8 @@ def get_orders_using_items(data: dict):
 def create_order(create_data):
     s = OrderSerializer(data=create_data)
     s.is_valid(raise_exception=True)
+    if s.validated_data.get('status') == 1 and not s.validated_data.get('paid_date'):
+        raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты")
     s = s.save()
     if 'items' in create_data:
         s.items.set(get_dishes_by_id(create_data['items']))

@@ -28,3 +28,5 @@ class CustomExceptionsHandler:
             return HttpResponse(status=400, content=str(exception).split('\n')[0]) # если исключение касается нарушений ограничений базы данных, возвращается информативная часть исключения, говорящая о том, какое ограничение нарушено
         elif type(exception) is TogetherConditionViolation:
             return HttpResponse(status=400, content=f'Следующие поля должны присутствовать в запросе вместе или вообще отсутствовать: {exception}')
+        elif type(exception) is LogicError:
+            return HttpResponse(status=400, content=f'Нарушена логика: {exception}')
