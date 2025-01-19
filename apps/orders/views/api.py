@@ -1,12 +1,12 @@
 
 from rest_framework.response import Response
-
 from apps.cafeteria.exceptions import NoDatesGiven
 from apps.orders.services import *
 from apps.cafeteria.base_api import *
 from serializers.orders import OrderSerializer
 from apps.orders.models import Order
 
+# Нужен для подсчёта выручки за определенное время
 class OrdersCashApiView(APIView):
 
     def post(self, request):
@@ -15,6 +15,7 @@ class OrdersCashApiView(APIView):
             raise NoDatesGiven()
         return Response(calculate_cash_sum(from_date, to_date))
 
+# Нужен для получения данных из базы данных
 class ReadOrderApiView(BaseReadCafeteriaApiView):
     _Model = Order
     _Serializer = OrderSerializer
@@ -28,6 +29,7 @@ class ReadOrderApiView(BaseReadCafeteriaApiView):
                 return Response(status=404)
             return Response(serialized.data)
 
+# Нужен для произведения действий по изменениям базы данных
 class OrderApiView(BaseCafeteriaApiView):
     _Serializer = OrderSerializer
     _Model = Order
