@@ -2,7 +2,7 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import QueryDict
-
+from django.db import transaction
 from serializers.orders import OrderSerializer
 from .models import Order, Dish
 from ..cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist, LogicError
@@ -70,14 +70,15 @@ def get_dishes_by_id(items: list):
 
 # Возвращает заказы, в которых есть параметр items
 def get_orders_using_items(data: dict):
-    get_dishes_by_id(data['items'])
+    get_dishes_by_id(data['items']) # Проверка, есть ли блюда в базе данных или нет
     data['items'].append(-1)
     raw_query = "SELECT DISTINCT oo.id FROM orders_order as oo JOIN orders_order_items as ooi ON oo.id = ooi.order_id " \
                 f"WHERE ooi.dish_id IN {tuple(data['items'])}"
     del data['items']
     for field in data:
         raw_query += f" AND oo.{field}={data[field]}"
-    objs = list(Order.objects.raw(raw_query+' GROUP BY oo.id;'))
+    with transaction.atomic():
+        objs = Order.objects.raw(raw_query+' GROUP BY oo.id;')
     return objs
 
 # Создает заказ

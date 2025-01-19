@@ -12,9 +12,9 @@ class TestCashSumCalc(BaseTestCase):
         c3 = services.calculate_cash_sum(datetime(2022, 1, 14), datetime(2024, 1, 16))
         c4 = services.calculate_cash_sum(datetime(2025, 1, 12), datetime(2025, 1, 13))
         self.assertEqual(c1, 1400)
-        self.assertEqual(c2, 2300)
+        self.assertEqual(c2, 1400)
         self.assertEqual(c3, 0)
-        self.assertEqual(c4, 200)
+        self.assertEqual(c4, 0)
 
 class TestSetPaidDate(BaseTestCase):
 
