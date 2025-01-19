@@ -18,3 +18,6 @@ class NestedObjectsDontExist(APIException):
 
 class NoDatesGiven(APIException):
     pass
+
+class TogetherConditionViolation(APIException):
+    pass

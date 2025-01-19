@@ -12,7 +12,7 @@ class CustomExceptionsHandler:
         NestedObjectsDontExist: (404, "Вы ввели несуществующие вложенные объекты"),
         ValidationError: (400, 'Данные введены в недопустимом формате'),
         NoDatesGiven: (400, 'В запросе не указаны все необходимые даты')
-    } # определяет текст сообщений, которые отправляются пользователю в случае вызова какого-либо исключения
+    } # определяет текст сообщений, которые отправляются пользователю в случае вызова какого-либо ПРОСТОГО исключения
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -26,3 +26,5 @@ class CustomExceptionsHandler:
             return HttpResponse(status=CustomExceptionsHandler.EXCEPTION_MESSAGES[type(exception)][0], content={CustomExceptionsHandler.EXCEPTION_MESSAGES[type(exception)][1]})
         elif type(exception) is IntegrityError:
             return HttpResponse(status=400, content=str(exception).split('\n')[0]) # если исключение касается нарушений ограничений базы данных, возвращается информативная часть исключения, говорящая о том, какое ограничение нарушено
+        elif type(exception) is TogetherConditionViolation:
+            return HttpResponse(status=400, content=f'Следующие поля должны присутствовать в запросе вместе или вообще отсутствовать: {exception}')

@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from apps.cafeteria.exceptions import NonEditFieldsWereTouched
+from apps.cafeteria.exceptions import NonEditFieldsWereTouched, TogetherConditionViolation
 from typing import Optional
 
 class BaseReadCafeteriaApiView(APIView):
@@ -35,30 +35,34 @@ class BaseCafeteriaApiView(APIView):
                 del data[key]
         return data
 
+
     # Проверка, содержит ли список полей поля, которые нельзя редактировать
-    def _is_valid_input(self, fields):
-        print(self._Serializer(data=fields).initial_data)
+    def _validate_input(self, fields):
         for field in fields:
             if field in self._NON_EDIT_FIELDS:
                 raise NonEditFieldsWereTouched()
-        # if self._FIELDS_TOGETHER:
-        #     for fields_set in self._FIELDS_TOGETHER:
-        #
-        #         for field in fields:
+
+        if self._FIELDS_TOGETHER:
+            for fields_set in self._FIELDS_TOGETHER:
+                in_count = 0 # количество полей, которые совпадают у данных запроса и набора полей в FIELDS_TOGETHER
+                for field in fields:
+                    if field in fields_set:
+                        in_count += 1
+                if in_count != 0 and in_count != len(fields_set):
+                    raise TogetherConditionViolation(fields_set)
 
     def post(self, request):
         self.__clean_data(request.data)
-        self._is_valid_input(request.data)
+        self._validate_input(request.data)
 
     def put(self, request):
         self.select_values, self.update_values = request.data.get('select'), request.data.get(
             'update')  # получение значений для выборки и значений, на которые будут заменяться значения объектов
-        self._is_valid_input(self.update_values)
         if self.select_values is None or self.update_values is None:
             return Response(status=400)
         self.__clean_data(self.select_values)
         self.__clean_data(self.update_values)
-        self._is_valid_input(request.data)
+        self._validate_input(self.update_values)
 
     # Удаляет объекты, значения которых соответствуют переданным в DELETE запросез
     def delete(self, request):

@@ -33,6 +33,7 @@ class ReadOrderApiView(BaseReadCafeteriaApiView):
 class OrderApiView(BaseCafeteriaApiView):
     _Serializer = OrderSerializer
     _Model = Order
+    _FIELDS_TOGETHER = [('status', 'paid_date')]
 
     def post(self, request):
         super().post(request)
