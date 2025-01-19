@@ -72,3 +72,16 @@ class TestGET(BaseAPITestCase):
         self.assertEqual(resp1.status_code, 200)
         self.assertEqual(resp2.status_code, 404)
         self.assertEqual(resp3.status_code, 200)
+
+    def test_get_cash(self):
+        URL = reverse("api_getcash")
+        resp1 = self.client.post(URL, {"from": 1, "to": "2025-01-11"}, format='json')
+        resp2 = self.client.post(URL, {"from": "2025-01-11", "to": 1}, format='json')
+        resp3 = self.client.post(URL, {"from": "1", "to": "2025-01-11"}, format='json')
+        resp4 = self.client.post(URL, {"from": "2025-01-8", "to": "2025-01-11"}, format='json')
+        resp5 = self.client.post(URL, {"from": "2021-01-2", "to": "2020-01-1"}, format='json')
+        self.assertEqual(resp1.status_code, 400)
+        self.assertEqual(resp2.status_code, 400)
+        self.assertEqual(resp3.status_code, 400)
+        self.assertEqual(resp4.status_code, 200)
+        self.assertEqual(resp5.status_code, 200)
