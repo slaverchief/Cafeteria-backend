@@ -1,14 +1,12 @@
 import json
-
+from orders.models import Order
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, FormView, UpdateView
-
-from apps.orders.forms import *
-from apps.orders.models import *
-from apps.orders.services import calculate_cash_sum, set_paid_date, get_filtered_orders
+from orders.forms import *
+from orders.services import calculate_cash_sum, set_paid_date, get_filtered_orders
 
 # Класс-представление для страницы отображения всех заказов
 class OrdersListView(ListView):

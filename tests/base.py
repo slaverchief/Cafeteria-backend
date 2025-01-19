@@ -1,8 +1,8 @@
 from django.test import TestCase
-from apps.orders import models
+from orders import models
 from datetime import datetime
 from rest_framework.test import APITestCase
-from django.db import transaction
+
 
 def init_db():
     dishes = [models.Dish.objects.create(name=f'TESTDISH{i}', price=100 + i * 50) for i in range(1, 6)]

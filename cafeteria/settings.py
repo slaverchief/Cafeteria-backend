@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.orders',
+    'orders',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.cafeteria.middleware.CustomExceptionsHandler'
+    'cafeteria.middleware.CustomExceptionsHandler'
 ]
 
 
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'cafeteria.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR), '../templates'],
+        'DIRS': [os.path.join(BASE_DIR), './templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,7 +129,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-os.path.join(BASE_DIR, '../static'),
+os.path.join(BASE_DIR, './static'),
 ]
 
 # Default primary key field type

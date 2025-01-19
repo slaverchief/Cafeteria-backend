@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponse
-from apps.cafeteria.exceptions import *
+from cafeteria.exceptions import *
 
 
 # Middleware для обработки пользовательских исключений

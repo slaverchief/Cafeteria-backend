@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from apps.cafeteria.exceptions import NonEditFieldsWereTouched, TogetherConditionViolation
+from cafeteria.exceptions import NonEditFieldsWereTouched, TogetherConditionViolation
 from typing import Optional
 
 class BaseReadCafeteriaApiView(APIView):

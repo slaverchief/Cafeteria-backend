@@ -5,7 +5,7 @@ from django.http import QueryDict
 from django.db import transaction
 from serializers.orders import OrderSerializer
 from .models import Order, Dish
-from ..cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist, LogicError
+from cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist, LogicError
 
 
 # Подсчитывает сумму выручки от и до определенных дат

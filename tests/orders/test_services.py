@@ -1,5 +1,6 @@
-from apps.tests.base import BaseTestCase
-from apps.orders import services, models
+from tests.base import BaseTestCase
+from orders import models
+from orders import services
 from datetime import datetime
 
 

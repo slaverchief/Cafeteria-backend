@@ -1,6 +1,6 @@
-from apps.tests.base import BaseTestCase
+from tests.base import BaseTestCase
 from django.urls import reverse
-from apps.orders import models
+from orders import models
 
 
 class TestOrderList(BaseTestCase):

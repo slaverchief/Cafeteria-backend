@@ -1,10 +1,10 @@
-
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from apps.cafeteria.exceptions import NoDatesGiven
-from apps.orders.services import *
-from apps.cafeteria.base_api import *
+from cafeteria.exceptions import NoDatesGiven
+from orders.services import *
 from serializers.orders import OrderSerializer
-from apps.orders.models import Order
+from orders.models import Order
+from cafeteria.base_api import *
 
 # Нужен для подсчёта выручки за определенное время
 class OrdersCashApiView(APIView):

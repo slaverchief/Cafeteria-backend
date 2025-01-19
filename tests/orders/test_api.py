@@ -1,7 +1,5 @@
-import json
-
-from apps.orders.models import Order, Dish
-from apps.tests.base import BaseAPITestCase
+from orders.models import Order, Dish
+from tests.base import BaseAPITestCase
 from django.urls import reverse
 
 URL_edit = reverse("api_edit")
