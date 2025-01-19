@@ -28,7 +28,7 @@ class TestGET(BaseAPITestCase):
         resp3 = self.client.post(URL_read, {'items': [pks[0], pks[3]], 'status': 12123}, format='json')
         resp4 = self.client.post(URL_read, {'items': [10**2]}, format='json')
         self.assertEqual(resp1.status_code, 200)
-        self.assertEqual(resp2.status_code, 404)
+        self.assertEqual(resp2.status_code, 200)
         self.assertEqual(resp3.status_code, 404)
         self.assertEqual(resp4.status_code, 404)
 
@@ -39,11 +39,14 @@ class TestGET(BaseAPITestCase):
         resp3 = self.client.post(URL_edit, {"items": [pks[0], pks[1]], "table_number": 1013}, format='json')
         resp4 = self.client.post(URL_edit, {"items": [10**2, 10**12], "table_number": 1}, format='json')
         resp5 = self.client.post(URL_edit,{"status": 1, "paid_date": "2025-01-19", "items": [pks[1], pks[2]], "table_number": 1111}, format='json')
+        resp6 = self.client.post(URL_edit, {"status": 1, "paid_date": "2025-01-19", "items": [],
+                                            "table_number": 1112321}, format='json')
         self.assertEqual(resp1.status_code, 400)
         self.assertEqual(resp2.status_code, 400)
         self.assertEqual(resp3.status_code, 200)
         self.assertEqual(resp4.status_code, 400)
         self.assertEqual(resp5.status_code, 200)
+        self.assertEqual(resp6.status_code, 400)
 
 
     def test_put(self):

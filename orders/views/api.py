@@ -1,5 +1,6 @@
 from cafeteria.exceptions import NoDatesGiven
-from orders.services import *
+from orders.services.edit_services import create_order, update_orders
+from orders.services.get_services import calculate_cash_sum, get_orders_using_items, get_dishes_by_id
 from view_tools.serializers.orders import OrderSerializer
 from orders.models import Order
 from cafeteria.base_api import *
