@@ -1,10 +1,19 @@
 
 from rest_framework.response import Response
+
+from apps.cafeteria.exceptions import NoDatesGiven
 from apps.orders.services import *
 from apps.cafeteria.base_api import *
 from serializers.orders import OrderSerializer
 from apps.orders.models import Order
 
+class OrdersCashApiView(APIView):
+
+    def post(self, request):
+        from_date, to_date = request.data.get("from"), request.data.get('to')
+        if not from_date or not to_date:
+            raise NoDatesGiven()
+        return Response(calculate_cash_sum(from_date, to_date))
 
 class ReadOrderApiView(BaseReadCafeteriaApiView):
     _Model = Order

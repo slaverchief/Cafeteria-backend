@@ -15,3 +15,6 @@ class NonEditFieldsWereTouched(APIException):
 
 class NestedObjectsDontExist(APIException):
     pass
+
+class NoDatesGiven(APIException):
+    pass

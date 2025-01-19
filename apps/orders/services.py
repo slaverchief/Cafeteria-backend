@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import QueryDict
 
 from serializers.orders import OrderSerializer
@@ -10,9 +10,12 @@ from ..cafeteria.exceptions import NoSelectedObjects, NestedObjectsDontExist
 
 # Подсчитывает сумму выручки от и до определенных дат
 def calculate_cash_sum(from_date: datetime.datetime, to_date: datetime.datetime):
-    return sum([int(n.total_price(as_int=True)) for n in Order.objects.filter(status__lte=2,
+    try:
+        return sum([int(n.total_price(as_int=True)) for n in Order.objects.filter(status__lte=2,
                                                               paid_date__gte=from_date,
                                                               paid_date__lte=to_date)])
+    except TypeError:
+        raise ValidationError("Передан недопустимый тип для поля")
 
 # Задает дату оплаты или стирает дату оплаты в зависимости от того какой статус был до этого
 def set_paid_date(status_before: int, status_after: int, order: Order):
