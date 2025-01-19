@@ -35,21 +35,19 @@ class OrderApiView(BaseCafeteriaApiView):
     _Model = Order
 
     def post(self, request):
+        super().post(request)
         create_order(request.data)
         return Response()
 
     # Обработка PUT методов
     def put(self, request):
-        select_values, update_values = request.data.get('select'), request.data.get('update') # получение значений для выборки и значений, на которые будут заменяться значения объектов
-        self._is_valid_input(update_values)
-        if select_values is None or update_values is None:
-            return Response(status=400)
+        super().put(request)
         # предполагается, что в словаре передаются ID блюд, задача - конвертировать ID в объекты модели Dish
-        if "items" in update_values:
-            items = get_dishes_by_id(update_values['items'])
+        if "items" in self.update_values:
+            items = get_dishes_by_id(self.update_values['items'])
 
-            update_values['items'] = items
-        update_orders(select_values, update_values)
+            self.update_values['items'] = items
+        update_orders(self.select_values, self.update_values)
         return Response()
 
     # Переписанный, подобно методу POST из ReadOrderApiView представления, метод DELETE

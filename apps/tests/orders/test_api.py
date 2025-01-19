@@ -49,12 +49,12 @@ class TestGET(BaseAPITestCase):
     def test_put(self):
         pks = [obj.pk for obj in Dish.objects.all()]
         resp1 = self.client.put(URL_edit, {
-            "select": {'items': [pks[0],pks[1]]},
+            "select": {'items': [pks[0],pks[1]], "some_field": 12},
             "update": {"items": [pks[0], pks[1]]}
         }, format='json')
         resp2 = self.client.put(URL_edit, {
             "select": {'items': [-1]},
-            "update": {"status": 12121}
+            "update": {"status": 12121, "some_field": 12}
         }, format='json')
         resp3 = self.client.put(URL_edit, {
             "select": {'items': [pks[0], pks[1]]},
