@@ -10,7 +10,6 @@ class CustomExceptionsHandler:
         NoSelectedObjects: (404, "Не найдены выбранные объекты"),
         NonEditFieldsWereTouched: (400, "Вы попытались изменить неизменяемое поле"),
         NestedObjectsDontExist: (404, "Вы ввели несуществующие вложенные объекты"),
-        ValidationError: (400, 'Данные введены в недопустимом формате'),
         NoDatesGiven: (400, 'В запросе не указаны все необходимые даты')
     } # определяет текст сообщений, которые отправляются пользователю в случае вызова какого-либо ПРОСТОГО исключения
 
@@ -24,9 +23,11 @@ class CustomExceptionsHandler:
     def process_exception(self, request, exception):
         if type(exception) in CustomExceptionsHandler.EXCEPTION_MESSAGES.keys():
             return HttpResponse(status=CustomExceptionsHandler.EXCEPTION_MESSAGES[type(exception)][0], content={CustomExceptionsHandler.EXCEPTION_MESSAGES[type(exception)][1]})
-        elif type(exception) is IntegrityError:
-            return HttpResponse(status=400, content=str(exception).split('\n')[0]) # если исключение касается нарушений ограничений базы данных, возвращается информативная часть исключения, говорящая о том, какое ограничение нарушено
+        # elif type(exception) is IntegrityError:
+        #     return HttpResponse(status=400, content=str(exception).split('\n')[0]) # если исключение касается нарушений ограничений базы данных, возвращается информативная часть исключения, говорящая о том, какое ограничение нарушено
         elif type(exception) is TogetherConditionViolation:
             return HttpResponse(status=400, content=f'Следующие поля должны присутствовать в запросе вместе или вообще отсутствовать: {exception}')
         elif type(exception) is LogicError:
             return HttpResponse(status=400, content=f'Нарушена логика: {exception}')
+        elif type(exception) is ValidationError:
+            return HttpResponse(status=400, content=f'Ошибка при валидации введенных значений: {exception}')

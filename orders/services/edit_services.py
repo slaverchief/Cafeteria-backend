@@ -34,6 +34,7 @@ def update_orders(select: dict, update: dict):
             raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты")
         if not obj.items.all():
             raise LogicError("в заказе должно быть выбрано хотя бы 1 блюдо")
+        print(obj.__dict__)
         obj.save()
 
 # Создает заказ

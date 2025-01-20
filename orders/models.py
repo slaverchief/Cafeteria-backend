@@ -25,6 +25,17 @@ class Order(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, blank=False, default=3) # статус заказа
     paid_date = models.DateField(null=True, blank=True) # дата оплаты заказа
 
+    def save(
+        self,
+        *args,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        self.full_clean()
+        super().save()
+
     def get_paid_date(self):
         return self.paid_date.strftime("%d.%m.%Y")
 
@@ -51,15 +62,8 @@ class Order(models.Model):
 
     class Meta:
         constraints = [
-            models.CheckConstraint(
-                check=models.Q(
-                    status__gte=1, status__lte=3
-                ),
-                name="Allowable status values",
-                violation_error_message="Кодовый номер статуса не может быть меньше 1 или больше 3",
+            models.CheckConstraint(check=models.Q(status__gte=1, status__lte=3), name="Allowable status values",
+violation_error_message="Кодовый номер статуса не может быть меньше 1 или больше 3"
             ),
-
-            models.UniqueConstraint(fields=['table_number'], name='unique_table_number',
-                                    violation_error_message="Номер стола уже занят"),
-
+            models.UniqueConstraint(fields=['table_number'], name='unique_table_number', violation_error_message="Номер стола уже занят"),
         ]
