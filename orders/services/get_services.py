@@ -37,7 +37,7 @@ def get_dishes_by_id(items: list):
     except ObjectDoesNotExist:
         raise NestedObjectsDontExist()
 
-# Возвращает заказы, в которых есть параметр items
+# Возвращает заказы при выборке с параметром items
 def get_orders_using_items(data: dict):
     get_dishes_by_id(data['items']) # Проверка, есть ли блюда в базе данных или нет
     data['items'].append(-1)

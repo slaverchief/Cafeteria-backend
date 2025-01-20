@@ -37,13 +37,13 @@ def update_orders(select: dict, update: dict):
         obj.save()
 
 # Создает заказ
-def create_order(create_data):
+def create_order(create_data: dict):
     if 'items' not in create_data or not create_data['items']:
-        raise LogicError("в заказе должно быть выбрано хотя бы 1 блюдо")
+        raise LogicError("в заказе должно быть выбрано хотя бы 1 блюдо") # если будет создан заказ, где не указан параметр items, получается что заказ без единого блюда, это нарушает логику: вызыввается исключение
     s = OrderSerializer(data=create_data)
     s.is_valid(raise_exception=True)
     if s.validated_data.get('status') == 1 and not s.validated_data.get('paid_date'):
-        raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты")
+        raise LogicError("при статусе 'оплачено' обязательно должна быть указана дата оплаты") # paid_date у оплаченного товара не может быть None.
     s = s.save()
-    s.items.set(get_dishes_by_id(create_data['items']))
+    s.items.set(get_dishes_by_id(create_data['items'])) # так как items - поле ManyToMany, назначаем ему список блюдо после создания объекта заказа.
     s.save()
