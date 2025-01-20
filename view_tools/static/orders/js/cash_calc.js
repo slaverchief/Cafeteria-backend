@@ -8,7 +8,7 @@ to.setAttribute('max', to.value)
 function update_sum(){
     from.setAttribute('max', to.value)
     to.setAttribute('min', from.value)
-    fetch('cash', {
+    fetch('/orders/api/cash', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,3 +1,4 @@
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from cafeteria.exceptions import NoDatesGiven
 from orders.services.edit_services import create_order, update_orders
 from orders.services.get_services import calculate_cash_sum, get_orders_using_items, get_dishes_by_id
@@ -7,6 +8,12 @@ from cafeteria.base_api import *
 
 # Нужен для подсчёта выручки за определенное время
 class OrdersCashApiView(APIView):
+    # Предотвращаем CSRF валидацию для OrdersCashApiView
+    class CsrfExemptSessionAuthentication(SessionAuthentication):
+        def enforce_csrf(self, request):
+            return
+
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request):
         from_date, to_date = request.data.get("from"), request.data.get('to')

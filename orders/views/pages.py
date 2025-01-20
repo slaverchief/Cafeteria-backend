@@ -74,11 +74,3 @@ def calc_cash(request):
 def delete_order(request, pk):
     Order.objects.get(pk=pk).delete()
     return HttpResponse()
-
-# Реализует API для получения выручки через Ajax запросд
-@csrf_exempt
-def get_cash(request):
-    data = json.loads(request.body)
-    from_date, to_date = data.get('from'), data.get('to') # извлечение даты начала и конца отсчёта и передаем функции calculate_cash_sum
-    return HttpResponse(calculate_cash_sum(from_date, to_date))
-
